@@ -1,0 +1,147 @@
+############################################################
+
+             window(arg)
+            Creates window. 
+
+args:
+- title (title="Program")
+- size (size="1280x720")
+- color (color="white")
+
+############################################################
+
+             loop()
+ Loops program sa program dont close. 
+
+############################################################
+
+             set_pos(arg)
+         Set object/text position. 
+
+args:
+- name (name=object1)
+- x (x=100)
+- y (y=200)
+
+############################################################
+
+             refresh()
+     Function that updates window.
+
+############################################################
+
+             all_obj()
+      Return list of all objects. 
+
+############################################################
+
+             key_down(arg)
+           Detects key press. 
+
+args:
+- key (key="p")
+
+
+############################################################
+
+             hit(arg)
+Detects collision between two objects. 
+     Returns None on colliision
+   Returns False is object is dont 
+     touching second object.
+
+args:
+- obj1 (obj1="Player")
+- obj2 (obj2="Floor")
+
+############################################################
+
+              obj_pos(arg):
+      Returns object coorinates.
+
+args:
+- obj (obj="player")
+
+############################################################
+
+                          text(arg)
+             Shows text on the screen.
+
+args:
+- text (text="Hello, world!")
+- x (x=100)
+- y (y=100)
+- color (color="black")
+- background (background="white")
+- size (size=100)
+- font (font="Courier") (deafult font)
+
+
+############################################################
+
+              wait(arg):
+         waiting same time.
+
+args:
+- wait (wait(5)) #5 second delay
+
+############################################################
+
+                              obj(arg)
+	    Creates an object.
+
+args:
+- x (x=100)
+- y (y=100)
+- color (color="black")
+- width (width=5)
+- height (height=5)
+- texture (in progess)
+
+############################################################
+
+	        kill_obj(arg)
+
+args:
+- name (name=object1)
+
+############################################################
+
+	        button(arg)
+                       Creates button.
+
+- x (x=100)
+- y (y=100)
+- color (color="black")
+- width (width=5)
+- height (height=5)
+- texture (in progess)
+- text (text="Hello, world!")
+- action (action=some_function) #fnction name witout "()" 
+- font_size (font_size=100)
+- font (font="Courier") (deafult font)
+- text_color (text_color="black")
+
+############################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
