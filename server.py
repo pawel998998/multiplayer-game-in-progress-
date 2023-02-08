@@ -1,6 +1,7 @@
 import socket
 import _thread, threading
-import json, time
+import time
+import pickle
 
 #########################################
 
@@ -12,12 +13,7 @@ s.listen()
 
 #########################################
 
-data = {
-    "player_id": [],
-    "player_pos": [],
-    "total_players": 0,
-    "player_ip": []
-}
+data = [1, 2, 3, 4, 5]
 
 #########################################
 
@@ -25,23 +21,28 @@ def on_new_client(client,addr):
     global data
     with clients_lock:
         clients.add(client)
-  
     while True:
-        client.send(json.dumps(data).encode())
-        data = client.recv(1024).decode()
-        data = json.dumps(data)
+        try:
+            client.send(pickle.dumps(data))
+            data = pickle.loads(client.recv(1024))
+        except:
+            print("Client left")
+            break
         print(data)
         if not data:
             break
         else:
             with clients_lock:
                 for c in clients:
-                    client.send(json.dumps(data).encode())
-
+                    try:
+                        c.send(pickle.dumps(data))
+                    except:
+                        print("Client left")
+                        break
+    time.sleep(0.1)
 #########################################
 
 print("Server running.")
 while True:
     conn, addr = s.accept()
     _thread.start_new_thread(on_new_client,(conn,addr))
-

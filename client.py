@@ -1,5 +1,5 @@
-import socket, threading, time, json
-from Pgine import *
+import socket, threading, time
+import pickle
 
 #########################################
 
@@ -9,11 +9,6 @@ client_socket.connect(('localhost', 25565))
 #########################################
 
 while True:
-    data = client_socket.recv(1024).decode()
-    data = json.loads(data)
-    data["player_pos"] = [1]
-    data = json.dumps(data)
-    client_socket.send(data.encode())
-
-
-
+    data = pickle.loads(client_socket.recv(1024))
+    client_socket.send(pickle.dumps(data))
+    time.sleep(0.1)
