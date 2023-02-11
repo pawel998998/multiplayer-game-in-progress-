@@ -15,36 +15,37 @@ s.bind(("0.0.0.0", 25565))
 s.listen(10)
 
 #########################################
-def on_new_client(client,addr):
-    global data
-    with clients_lock:
-        clients.add(client)
+def new_client(client,addr):
+    global data, index
+    while True:
+        try:
+            client.send(pickle.dumps(data))
+            data = pickle.loads(client.recv(1024))
+        except:
+            index = data["id"].index(addr[1])
+            data["coordinates"].remove(data["coordinates"][index])
+            data["id"].remove(addr[1])
+            print(f"Player {addr[1]} left.")
+            break
+        time.sleep(0.016)
+#########################################
+
+def petla_print():
     while True:
         if () not in data["coordinates"]:
             data["coordinates"].append(())
-        try:
-            client.send(pickle.dumps(data))
-            data = pickle.loads(client.recv(100000))
-            print(data)
-        except:
-            while True:
-                break
-            print(f"{addr[1]} left.")
-            break
-        if not data:
-            break
-        else:
-            with clients_lock:
-                for c in clients:
-                    try:
-                        c.send(pickle.dumps(data))
-                    except:
-                        break
-    #time.sleep(0.016)
+        print(data)
+        time.sleep(0.016)
+
+_thread.start_new_thread(petla_print, ())
+
 #########################################
 
 print("Server running.")
+
 while True:
     conn, addr = s.accept()
-    _thread.start_new_thread(on_new_client,(conn,addr))
+    data["id"].append(addr[1])
+    _thread.start_new_thread(new_client,(conn,addr))
+
 

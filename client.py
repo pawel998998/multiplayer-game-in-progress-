@@ -20,21 +20,12 @@ player_y = 0
 
 lista_graczy_oprocz_mnie = []
 lista_kordow_oprocz_mnie = []
-lista_objetow = []
 #########################################
 
 
 
 while True:
-    data = pickle.loads(client_socket.recv(10000))
-    if client_id not in data["id"]:
-        data["id"].append(client_id)
-
-    for i in range(len(all_obj())):
-        if str(all_obj()[i]) not in lista_objetow:
-            lista_objetow.append(str(all_obj()[i]))
-
-
+    data = pickle.loads(client_socket.recv(1024))
 
     if key_down("w"):
         player_y -= 12
