@@ -1,34 +1,36 @@
-import socket
-import _thread, threading
-import time
-import pickle
+import socket, pickle, time, _thread, threading
+
+#########################################
+data = {
+    "id": [],
+    "coordinates": [],
+}
 
 #########################################
 
 clients = set()
 clients_lock = threading.Lock()
 s = socket.socket()
-s.bind(("localhost", 25565))
-s.listen()
+s.bind(("0.0.0.0", 25565))
+s.listen(10)
 
 #########################################
-
-data = [1, 2, 3, 4, 5]
-
-#########################################
-
 def on_new_client(client,addr):
     global data
     with clients_lock:
         clients.add(client)
     while True:
+        if () not in data["coordinates"]:
+            data["coordinates"].append(())
         try:
             client.send(pickle.dumps(data))
-            data = pickle.loads(client.recv(1024))
+            data = pickle.loads(client.recv(100000))
+            print(data)
         except:
-            print("Client left")
+            while True:
+                break
+            print(f"{addr[1]} left.")
             break
-        print(data)
         if not data:
             break
         else:
@@ -37,12 +39,12 @@ def on_new_client(client,addr):
                     try:
                         c.send(pickle.dumps(data))
                     except:
-                        print("Client left")
                         break
-    time.sleep(0.1)
+    #time.sleep(0.016)
 #########################################
 
 print("Server running.")
 while True:
     conn, addr = s.accept()
     _thread.start_new_thread(on_new_client,(conn,addr))
+

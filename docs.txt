@@ -11,7 +11,7 @@ args:
 ############################################################
 
              loop()
- Loops program sa program dont close. 
+ Loops program sa program wont close. 
 
 ############################################################
 

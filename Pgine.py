@@ -1,10 +1,7 @@
-import tkinter, time, keyboard, threading
+import tkinter, time, threading, keyboard
 from tkinter import *
 from tkinter.ttk import *
-
-
-
-
+from tkinter import ttk
 
 def window(title="Unnamed", size="1280x720", color="white"):
     global root
@@ -44,13 +41,12 @@ def all_obj():
     all_obj = root.winfo_children()
     return all_obj
 
-def key_down(key=None):
-    pressed = None
+def key_down(key):
     if keyboard.is_pressed(key):
-        pressed = True
+        return True
     else:
-        pressed = False
-    return pressed
+        return False
+    
 
 def hit(obj1, obj2):
     try:
@@ -73,7 +69,8 @@ def hit(obj1, obj2):
 def obj_pos(obj):
     x = obj.winfo_rootx()
     y = obj.winfo_rooty()
-    return x, y
+    return (int(x),int(y))
+
 
 def text(text="", x=0, y=0, color="black", background="black", size=10, font="Courier"):
     name = tkinter.Label(text=text, fg=color, bg=background, font=(font, size))
