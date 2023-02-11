@@ -5,18 +5,13 @@ data = {
     "id": [],
     "coordinates": [],
 }
-
 #########################################
-
-clients = set()
-clients_lock = threading.Lock()
 s = socket.socket()
 s.bind(("0.0.0.0", 25565))
-s.listen(10)
-
+s.listen()
 #########################################
 def new_client(client,addr):
-    global data, index
+    global data
     while True:
         try:
             client.send(pickle.dumps(data))
@@ -29,7 +24,6 @@ def new_client(client,addr):
             break
         time.sleep(0.016)
 #########################################
-
 def petla_print():
     while True:
         if () not in data["coordinates"]:
@@ -38,11 +32,8 @@ def petla_print():
         time.sleep(0.016)
 
 _thread.start_new_thread(petla_print, ())
-
 #########################################
-
 print("Server running.")
-
 while True:
     conn, addr = s.accept()
     data["id"].append(addr[1])
