@@ -3,7 +3,7 @@ import socket, pickle, time, _thread, threading
 #########################################
 data = {
     "id": [],
-    "coordinates": [],
+    "coordinates": []
 }
 #########################################
 s = socket.socket()
@@ -15,7 +15,7 @@ def new_client(client,addr):
     while True:
         try:
             client.send(pickle.dumps(data))
-            data = pickle.loads(client.recv(1024))
+            data = pickle.loads(client.recv(1024000))
         except:
             index = data["id"].index(addr[1])
             data["coordinates"].remove(data["coordinates"][index])
@@ -29,7 +29,6 @@ def petla_print():
         if () not in data["coordinates"]:
             data["coordinates"].append(())
         print(data)
-        time.sleep(0.016)
 
 _thread.start_new_thread(petla_print, ())
 #########################################

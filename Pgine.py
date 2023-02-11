@@ -69,7 +69,9 @@ def hit(obj1, obj2):
 def obj_pos(obj):
     x = obj.winfo_rootx()
     y = obj.winfo_rooty()
-    return (int(x),int(y))
+    x = int(x)
+    y = int(y)
+    return x,y
 
 
 def text(text="", x=0, y=0, color="black", background="black", size=10, font="Courier"):
