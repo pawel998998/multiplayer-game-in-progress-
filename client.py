@@ -1,20 +1,51 @@
 import socket, threading, time, pickle, re
-from Pgine import *
+import sys, pygame
 
 #######################################
 lista_graczy_oprocz_mnie = []
 lista_kordow_oprocz_mnie = []
+fps = 60
 #########################################
-window(title="Client", size="500x500")
+pygame.init()
+clock = pygame.time.Clock()
+screen = pygame.display.set_mode((500, 500))
 
-floor = obj(x=10, y=400, color="black", width=34, height=5)
-player = obj(x=0, y=0, color="red", width=5, height=5)
+player = pygame.Rect(0, 0, 100, 100)
+floor = pygame.Rect(0, 400, 900, 100)
+#########################################
+def draw():
+    global floor, player
+    screen.fill((0, 0, 0))
+    floor = pygame.draw.rect(screen, (0, 255, 0), floor)
+    player = pygame.draw.rect(screen, (255, 255, 255), player)
 
-player_x = 0
-player_y = 0
+    try:
+        for i in range(len(lista_graczy_oprocz_mnie)):
+            pygame.draw.rect(screen, (255, 0, 0), (pygame.Rect(lista_kordow_oprocz_mnie[i][0], lista_kordow_oprocz_mnie[i][1], 100, 100)))
+    except:
+        pass
+
+    pygame.display.update()
+
+
+def hit(obj1, obj2):
+    x_obj1 = obj1.x
+    y_obj1 = obj1.y
+    height_obj1 = obj1.height
+    width_obj1 = obj1.width
+    x_obj2 = obj2.x
+    y_obj2 = obj2.y
+    height_obj2 = obj2.height
+    width_obj2 = obj2.width
+    if y_obj1+height_obj1 > y_obj2 and x_obj1 > x_obj2-width_obj1 and x_obj1 < x_obj2+width_obj2 and y_obj1 < y_obj2+height_obj1:
+        touching = True
+        return touching
+    else:
+        touching = False
+        return touching
 #######################################
 client_socket = socket.socket()
-client_socket.connect(('localhost', 25565))
+client_socket.connect(('192.168.0.62', 25565))
 
 client_id = str(client_socket).split(" ")
 client_id = int(client_id[6].replace(")", "").replace(",", ""))
@@ -23,47 +54,43 @@ client_id = int(client_id[6].replace(")", "").replace(",", ""))
 while True:
     data = pickle.loads(client_socket.recv(1024000))
 
-    if key_down("w"):
-        player_y -= 12
-    if key_down("a"):
-        player_x -= 6
-    if key_down("d"):
-        player_x += 6
+    clock.tick(fps)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: sys.exit()
 
-    player_y += 6
 
-    if hit(floor, player) == None:
-        player_y -= 6
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_w]:
+        player.y -= 20
+    if keys[pygame.K_a]:
+        player.x -= 10
+    if keys[pygame.K_d]:
+        player.x += 10
+
+    player.y += 10
+
+    if hit(player, floor) == True:
+        player.y -= 10
+
+    draw()
 
     try:
         index = data["id"].index(client_id)
-        data["coordinates"][index] = obj_pos(player)
+        data["coordinates"][index] = (player.x, player.y)
     except:
         pass
-    
-    set_pos(player, player_x, player_y)
+
+
 
     client_socket.send(pickle.dumps(data))
-
-    for i in range(len(lista_graczy_oprocz_mnie)):
-        try:
-            a = obj(x=0, y=0, color="red", width=5, height=5)
-            set_pos(a, x=lista_kordow_oprocz_mnie[i][0], y=lista_kordow_oprocz_mnie[i][1])
-        except:
-            pass
 
     try:
         lista_graczy_oprocz_mnie = data["id"]
         lista_graczy_oprocz_mnie.remove(client_id)
         lista_kordow_oprocz_mnie = data["coordinates"]
-        lista_kordow_oprocz_mnie.remove(obj_pos(player)).remove(())
+        lista_kordow_oprocz_mnie.remove((player.x, player.y)).remove(())
     except:
         pass
 
-    refresh()
-    time.sleep(0.016)
-    try:
-        kill_obj(a)
-    except:
-        pass
+
 
