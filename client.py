@@ -8,16 +8,22 @@ fps = 60
 #########################################
 pygame.init()
 clock = pygame.time.Clock()
-screen = pygame.display.set_mode((500, 500))
+screen = pygame.display.set_mode((1280, 720))
 
-player = pygame.Rect(0, 0, 100, 100)
-floor = pygame.Rect(0, 400, 900, 100)
+floor_x = 0
+floor_y = 600
+
+floor = pygame.Rect(floor_x, floor_y, 900, 100)
+player = pygame.Rect(500, 500, 100, 100)
+
 #########################################
 def draw():
     global floor, player
     screen.fill((0, 0, 0))
     floor = pygame.draw.rect(screen, (0, 255, 0), floor)
     player = pygame.draw.rect(screen, (255, 255, 255), player)
+    floor = pygame.Rect(floor_x, floor_y, 900, 100)
+    player = pygame.Rect(500, 500, 100, 100)
 
     try:
         for i in range(len(lista_graczy_oprocz_mnie)):
@@ -61,16 +67,16 @@ while True:
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
-        player.y -= 20
+        floor_y += 20
     if keys[pygame.K_a]:
-        player.x -= 10
+        floor_x += 10
     if keys[pygame.K_d]:
-        player.x += 10
+        floor_x -= 10
 
-    player.y += 10
+    floor_y -= 10
 
     if hit(player, floor) == True:
-        player.y -= 10
+        floor_y += 10
 
     draw()
 
