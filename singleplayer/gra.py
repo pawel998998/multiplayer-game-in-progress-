@@ -10,7 +10,7 @@ def fps():
         if event.type == pygame.QUIT: sys.exit()
 #######################
 player_x = 0
-player_y = 390
+player_y = 400
 
 jumping = False
 player_speed = 3
@@ -36,8 +36,8 @@ while True:
 
     if player.colliderect(floor2) == True:
         jumping = False
-        Y_VELOCITY = 0
         player_y = floor2.top - player.height
+        Y_VELOCITY = 0
 
     if not player.colliderect(floor) and not player.colliderect(floor2):
         jumping = True
@@ -52,6 +52,8 @@ while True:
     if keys[pygame.K_d]:
         player_x += player_speed
 
+    print(player.right)
+
     screen.fill((0, 0, 0))
     floor = pygame.Rect(0, 400, 500, 10)
     floor = pygame.draw.rect(screen, (0, 255, 0), floor)
@@ -60,3 +62,4 @@ while True:
     player = pygame.Rect(player_x, player_y, 40, 40)
     player = pygame.draw.rect(screen, (255, 255, 255), player)
     pygame.display.update()
+
